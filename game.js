@@ -99,4 +99,4 @@ curPiece.draw();
 
 game.drawBoard();
 
-setInterval(pieceDown, 500);
+//setInterval(pieceDown, 500);
