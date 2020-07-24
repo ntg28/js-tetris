@@ -40,7 +40,10 @@ class Piece {
       let y = this.piece[newVariant][i][0]+newY;
       let x = this.piece[newVariant][i][1]+newX;
 
-      if (game.board[y][x] !== game.bg) {
+      if (y === 20 || game.board[y][x] !== game.bg) {
+        if (newY !== this.pos.y) {
+          curPiece = newPiece();
+        }
         return true;
       }
     }
