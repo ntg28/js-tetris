@@ -10,10 +10,10 @@ Trying to make a tretis based game.
 - [x] piece class
   - [x] move
   - [x] rotate
-  - [ ] collision
+  - [x] collision
 
 - [x] create new piece when collide
-- [ ] way to lose
+- [x] way to lose
 - [ ] improve the controls
 - [ ] save and show the score
 - [ ] improve the style
