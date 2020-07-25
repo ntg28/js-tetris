@@ -25,6 +25,9 @@ function Game() {
     if (color === bg) {
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
       ctx.strokeRect(x * sq, y * sq, sq, sq);
+    } else {
+      ctx.strokeStyle = '#cccccc';
+      ctx.strokeRect(x * sq, y * sq, sq, sq);
     }
   }
 
@@ -56,7 +59,9 @@ function update() {
 
 function newPiece() {
   let rn = Math.floor(Math.random() * 7);
-  return new Piece(pieces[rn], 5, 0);
+  let nPiece = new Piece(pieces[rn], 5, 0);
+  nPiece.draw(init=true);
+  return nPiece;
 }
 
 function pieceDown() {
@@ -99,4 +104,4 @@ curPiece.draw();
 
 game.drawBoard();
 
-//setInterval(pieceDown, 500);
+setInterval(pieceDown, 400);

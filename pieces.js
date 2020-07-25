@@ -41,11 +41,11 @@ const oPiece = [
 	[[0, 0], [0, 1], [1, 0], [1, 1]],
 ];
 const pieces = [
-	[tPiece, 'purple'],
-	[jPiece, 'green'],
-	[lPiece, 'red'],
-	[iPiece, 'blue'],
-	[zPiece, 'yellow'],
-	[sPiece, 'cyan'],
-	[oPiece, 'gray'],
+	[tPiece, '#472d57'],
+	[jPiece, '#4d8d6a'],
+	[lPiece, '#aa4863'],
+	[iPiece, '#1b2231'],
+	[zPiece, '#d9816d'],
+	[sPiece, '#3B4BC5'],
+	[oPiece, '#819cbe'],
 ];

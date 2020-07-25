@@ -7,19 +7,20 @@ class Piece {
   }
 
   move(x, y) {
+    this.clear();
+
     let newX = this.pos.x + x;
     let newY = this.pos.y + y;
 
     if (!this.collision(newX, newY, this.variant)) {
       this.pos.x = newX;
       this.pos.y = newY;
-    } else {
-      this.draw();
-      game.removeFilledRows();
     }
   }
 
   rotate(variant) {
+    this.clear();
+
     let newVariant = this.variant + variant;
 
     if (newVariant === 4) {
@@ -34,14 +35,14 @@ class Piece {
   }
 
   collision(newX, newY, newVariant) {
-    this.clear();
-
     for (let i = 0; i < this.piece[newVariant].length; i++) {
       let y = this.piece[newVariant][i][0]+newY;
       let x = this.piece[newVariant][i][1]+newX;
 
       if (y === 20 || game.board[y][x] !== game.bg) {
         if (newY !== this.pos.y) {
+          this.draw();
+          game.removeFilledRows();
           curPiece = newPiece();
         }
         return true;
@@ -51,7 +52,14 @@ class Piece {
     return false;
   }
 
-  draw() {
+  draw(init=false) {
+    if (init) {
+      if (this.collision(this.pos.x, this.pos.y, this.variant)) {
+        game.clearBoard();
+        alert('game over!');
+      }
+    }
+
     for (let i = 0; i < this.piece[this.variant].length; i++) {
       let y = this.piece[this.variant][i][0]+this.pos.y;
       let x = this.piece[this.variant][i][1]+this.pos.x;
