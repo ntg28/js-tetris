@@ -15,6 +15,8 @@ class Piece {
     if (!this.collision(newX, newY, this.variant)) {
       this.pos.x = newX;
       this.pos.y = newY;
+    } else {
+      return true;
     }
   }
 
@@ -39,11 +41,18 @@ class Piece {
       let y = this.piece[newVariant][i][0]+newY;
       let x = this.piece[newVariant][i][1]+newX;
 
-      if (y === 20 || game.board[y][x] !== game.bg) {
+      if (y === 23 || game.board[y][x] !== game.bg) {
         if (newY !== this.pos.y) {
+          //console.log('y collision')
+
           this.draw();
           game.removeFilledRows();
           curPiece = newPiece();
+
+          if (this.pos.y <= 3) {
+            //console.log('lose');
+            game.clearBoard();
+          }
         }
         return true;
       }
@@ -52,14 +61,7 @@ class Piece {
     return false;
   }
 
-  draw(init=false) {
-    if (init) {
-      if (this.collision(this.pos.x, this.pos.y, this.variant)) {
-        game.clearBoard();
-        alert('game over!');
-      }
-    }
-
+  draw() {
     for (let i = 0; i < this.piece[this.variant].length; i++) {
       let y = this.piece[this.variant][i][0]+this.pos.y;
       let x = this.piece[this.variant][i][1]+this.pos.x;

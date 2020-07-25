@@ -1,14 +1,14 @@
 function Game() {
   const canvas = document.querySelector('#canvas');
   const ctx = canvas.getContext('2d');
-  const row = 20, col = 10, sq = 30, bg = '#111111';
-  const board = [...Array(20)].map(i => Array(10).fill(bg));
+  const row = 23, col = 10, sq = 30, bg = '#111111';
+  const board = [...Array(row)].map(i => Array(col).fill(bg));
 
   function drawBoard() {
-    for (let y = 0; y < row; y++) {
+    for (let y = 3; y < row; y++) {
       for (let x = 0; x < col; x++) {
         let curColor = board[y][x];
-        drawSquare(x, y, curColor);
+        drawSquare(x, y - 3, curColor);
       }
     }
   }
@@ -32,7 +32,7 @@ function Game() {
   }
 
   function removeFilledRows() {
-    for (let y = 0; y < row; y++) {
+    for (let y = 3; y < row; y++) {
       if (board[y].every(i => i !== bg)) {
         for (let j = y; j > 0; j--) {
           board[j] = [...board[j - 1]];
@@ -48,6 +48,7 @@ function Game() {
     drawBoard,
     clearBoard,
     removeFilledRows,
+    row,
     bg,
   }
 }
@@ -59,15 +60,22 @@ function update() {
 
 function newPiece() {
   let rn = Math.floor(Math.random() * 7);
-  let nPiece = new Piece(pieces[rn], 5, 0);
-  nPiece.draw(init=true);
+  let nPiece = new Piece(pieces[rn], 3, 1);
   return nPiece;
 }
 
-function pieceDown() {
+function pieceFall() {
   curPiece.move(0, 1);
   curPiece.draw();
   game.drawBoard();
+}
+
+function pieceDown() {
+  for (let y = 0; y < game.row; y++) {
+    if (curPiece.move(0, 1)) {
+      break;
+    }
+  }
 }
 
 document.addEventListener('keypress', (event) => {
@@ -90,6 +98,9 @@ document.addEventListener('keypress', (event) => {
     case 'p':
       curPiece = newPiece();
       break;
+    case ' ':
+      pieceDown();
+      break;
   }
 
   update();
@@ -104,4 +115,4 @@ curPiece.draw();
 
 game.drawBoard();
 
-setInterval(pieceDown, 400);
+setInterval(pieceFall, 400);
