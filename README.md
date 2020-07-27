@@ -16,5 +16,5 @@ Trying to make a tretis based game.
 * [x] create new piece when collide
 * [x] way to lose
 * [ ] improve the controls
-* [ ] save and show the score
+* [x] save and show the score
 * [ ] improve the style
