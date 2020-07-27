@@ -53,7 +53,7 @@ function Game() {
   }
 
   function removeFilledRows() {
-    let rowsPerPiece = 0;
+    let rowsFilled = 0;
 
     for (let y = 3; y < row; y++) {
       if (board[y].every(i => i !== bg)) {
@@ -61,11 +61,17 @@ function Game() {
           board[j] = [...board[j - 1]];
         }
 
-        rowsPerPiece += 1;
+        rowsFilled += 1;
       }
     }
 
-    switch (rowsPerPiece) {
+    updateScore(rowsFilled);
+
+    drawBoard();
+  }
+
+  function updateScore(points) {
+    switch (points) {
       case 4:
         score += 16;
         break;
@@ -78,11 +84,12 @@ function Game() {
       case 1:
         score += 1;
         break;
+      case -1:
+        score = 0;
+        break;
     }
 
     scoreElement.innerHTML = score;
-
-    drawBoard();
   }
 
   function pieceDown() {
@@ -132,6 +139,7 @@ function Game() {
     board,
     newPiece,
     clearBoard,
+    updateScore,
     removeFilledRows,
   }
 }

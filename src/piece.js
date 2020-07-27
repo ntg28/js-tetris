@@ -49,6 +49,7 @@ class Piece {
 
           if (this.pos.y <= 3) {
             //console.log('lose');
+            game.updateScore(-1);
             game.clearBoard();
           }
         }
