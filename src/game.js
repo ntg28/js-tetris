@@ -4,10 +4,25 @@ function Game() {
   const scoreElement = document.querySelector('#score')
   const row = 23, col = 10, sq = 30, bg = '#111111';
   const board = [...Array(row)].map(i => Array(col).fill(bg));
-  const lockedKeys = {
-    o: false,
-    i: false,
-  };
+  const keys = {};
+  const keysFunctions = {
+    ' ': () => pieceDown(),
+    a: () => curPiece.move(-1, 0),
+    s: () => curPiece.move(0, 1),
+    d: () => curPiece.move(1, 0),
+    o: () => {
+      if (!keys['o']) {
+        curPiece.rotate(1);
+        keys['o'] = true;
+      }
+    },
+    i: () => {
+      if (!keys['i']) {
+        curPiece.rotate(-1);
+        keys['i'] = true;
+      }
+    },
+  }
 
   let curPiece;
   let score = 0;
@@ -110,42 +125,20 @@ function Game() {
   }
 
   document.addEventListener('keypress', (event) => {
-    switch (event.key) {
-      case 'a':
-        curPiece.move(-1, 0);
-        break;
-      case 's':
-        curPiece.move(0, 1);
-        break;
-      case 'd':
-        curPiece.move(1, 0);
-        break;
-      case 'p':
-        curPiece = newPiece();
-        break;
-      case ' ':
-        pieceDown();
-        break;
-    }
-
-    if (event.key === 'o' && !lockedKeys[event.key]) {
-      curPiece.rotate(1);
-      lockedKeys[event.key] = true;
-    } else if (event.key === 'i' && !lockedKeys[event.key]) {
-      curPiece.rotate(-1);
-      lockedKeys[event.key] = true;
+    if (keysFunctions[event.key]) {
+      keysFunctions[event.key]();
     }
 
     update();
   });
 
   document.addEventListener('keyup', (event) => {
-    if (event.key === 'o' && lockedKeys[event.key]) {
-      lockedKeys[event.key] = false;
-    } else if (event.key === 'i' && lockedKeys[event.key]) {
-      lockedKeys[event.key] = false;
+    if (event.key === 'o') {
+      keys['o'] = false;
+    } else if (event.key === 'i') {
+      keys['i'] = false;
     }
-  })
+  });
 
   return {
     bg,
