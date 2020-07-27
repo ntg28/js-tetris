@@ -4,6 +4,10 @@ function Game() {
   const scoreElement = document.querySelector('#score')
   const row = 23, col = 10, sq = 30, bg = '#111111';
   const board = [...Array(row)].map(i => Array(col).fill(bg));
+  const lockedKeys = {
+    o: false,
+    i: false,
+  };
 
   let curPiece;
   let score = 0;
@@ -116,12 +120,6 @@ function Game() {
       case 'd':
         curPiece.move(1, 0);
         break;
-      case 'i':
-        curPiece.rotate(-1);
-        break;
-      case 'o':
-        curPiece.rotate(1);
-        break;
       case 'p':
         curPiece = newPiece();
         break;
@@ -130,8 +128,24 @@ function Game() {
         break;
     }
 
+    if (event.key === 'o' && !lockedKeys[event.key]) {
+      curPiece.rotate(1);
+      lockedKeys[event.key] = true;
+    } else if (event.key === 'i' && !lockedKeys[event.key]) {
+      curPiece.rotate(-1);
+      lockedKeys[event.key] = true;
+    }
+
     update();
   });
+
+  document.addEventListener('keyup', (event) => {
+    if (event.key === 'o' && lockedKeys[event.key]) {
+      lockedKeys[event.key] = false;
+    } else if (event.key === 'i' && lockedKeys[event.key]) {
+      lockedKeys[event.key] = false;
+    }
+  })
 
   return {
     bg,
