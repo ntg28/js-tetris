@@ -1,11 +1,18 @@
 function Game() {
   const canvas = document.querySelector('#canvas');
   const ctx = canvas.getContext('2d');
+  const scoreElement = document.querySelector('#score')
   const row = 23, col = 10, sq = 30, bg = '#111111';
   const board = [...Array(row)].map(i => Array(col).fill(bg));
-  const scoreElement = document.querySelector('#score')
 
+  let curPiece;
   let score = 0;
+
+  function init() {
+    newPiece();
+    update();
+    setInterval(pieceFall, 400);
+  }
 
   function drawBoard() {
     for (let y = 3; y < row; y++) {
@@ -32,6 +39,17 @@ function Game() {
       ctx.strokeStyle = '#cccccc';
       ctx.strokeRect(x * sq, y * sq, sq, sq);
     }
+  }
+
+  function newPiece() {
+    let rn = Math.floor(Math.random() * 7);
+    curPiece = new Piece(pieces[rn], 3, 1);
+    update();
+  }
+
+  function pieceFall() {
+    curPiece.move(0, 1);
+    update();
   }
 
   function removeFilledRows() {
@@ -66,76 +84,57 @@ function Game() {
 
     drawBoard();
   }
-  
 
-  return {
-    board,
-    drawBoard,
-    clearBoard,
-    removeFilledRows,
-    row,
-    bg,
-  }
-}
-
-function update() {
-  curPiece.draw();
-  game.drawBoard();
-}
-
-function newPiece() {
-  let rn = Math.floor(Math.random() * 7);
-  let nPiece = new Piece(pieces[rn], 3, 1);
-  return nPiece;
-}
-
-function pieceDown() {
-  for (let y = 0; y < game.row; y++) {
-    if (curPiece.move(0, 1)) {
-      break;
+  function pieceDown() {
+    for (let y = 0; y < row; y++) {
+      if (curPiece.move(0, 1)) {
+        break;
+      }
     }
   }
-}
 
-function pieceFall() {
-  curPiece.move(0, 1);
-  curPiece.draw();
-  game.drawBoard();
-}
-
-document.addEventListener('keypress', (event) => {
-  switch (event.key) {
-    case 'a':
-      curPiece.move(-1, 0);
-      break;
-    case 's':
-      curPiece.move(0, 1);
-      break;
-    case 'd':
-      curPiece.move(1, 0);
-      break;
-    case 'i':
-      curPiece.rotate(-1);
-      break;
-    case 'o':
-      curPiece.rotate(1);
-      break;
-    case 'p':
-      curPiece = newPiece();
-      break;
-    case ' ':
-      pieceDown();
-      break;
+  function update() {
+    curPiece.draw();
+    drawBoard();
   }
 
-  update();
-});
+  document.addEventListener('keypress', (event) => {
+    switch (event.key) {
+      case 'a':
+        curPiece.move(-1, 0);
+        break;
+      case 's':
+        curPiece.move(0, 1);
+        break;
+      case 'd':
+        curPiece.move(1, 0);
+        break;
+      case 'i':
+        curPiece.rotate(-1);
+        break;
+      case 'o':
+        curPiece.rotate(1);
+        break;
+      case 'p':
+        curPiece = newPiece();
+        break;
+      case ' ':
+        pieceDown();
+        break;
+    }
+
+    update();
+  });
+
+  return {
+    bg,
+    init,
+    board,
+    newPiece,
+    clearBoard,
+    removeFilledRows,
+  }
+}
 
 const game = Game();
-
-var curPiece = newPiece();
-curPiece.draw();
-
-game.drawBoard();
-
-setInterval(pieceFall, 400);
+game.init();

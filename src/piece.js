@@ -43,11 +43,9 @@ class Piece {
 
       if (y === 23 || game.board[y][x] !== game.bg) {
         if (newY !== this.pos.y) {
-          //console.log('y collision')
-
           this.draw();
           game.removeFilledRows();
-          curPiece = newPiece();
+          game.newPiece();
 
           if (this.pos.y <= 3) {
             //console.log('lose');
