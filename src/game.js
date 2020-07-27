@@ -3,6 +3,9 @@ function Game() {
   const ctx = canvas.getContext('2d');
   const row = 23, col = 10, sq = 30, bg = '#111111';
   const board = [...Array(row)].map(i => Array(col).fill(bg));
+  const scoreElement = document.querySelector('#score')
+
+  let score = 0;
 
   function drawBoard() {
     for (let y = 3; y < row; y++) {
@@ -32,16 +35,38 @@ function Game() {
   }
 
   function removeFilledRows() {
+    let rowsPerPiece = 0;
+
     for (let y = 3; y < row; y++) {
       if (board[y].every(i => i !== bg)) {
         for (let j = y; j > 0; j--) {
           board[j] = [...board[j - 1]];
         }
+
+        rowsPerPiece += 1;
       }
     }
 
+    switch (rowsPerPiece) {
+      case 4:
+        score += 16;
+        break;
+      case 3:
+        score += 9;
+        break;
+      case 2:
+        score += 4;
+        break;
+      case 1:
+        score += 1;
+        break;
+    }
+
+    scoreElement.innerHTML = score;
+
     drawBoard();
   }
+  
 
   return {
     board,
@@ -64,18 +89,18 @@ function newPiece() {
   return nPiece;
 }
 
-function pieceFall() {
-  curPiece.move(0, 1);
-  curPiece.draw();
-  game.drawBoard();
-}
-
 function pieceDown() {
   for (let y = 0; y < game.row; y++) {
     if (curPiece.move(0, 1)) {
       break;
     }
   }
+}
+
+function pieceFall() {
+  curPiece.move(0, 1);
+  curPiece.draw();
+  game.drawBoard();
 }
 
 document.addEventListener('keypress', (event) => {
@@ -105,8 +130,6 @@ document.addEventListener('keypress', (event) => {
 
   update();
 });
-
-// hardcode
 
 const game = Game();
 

@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: #777;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.main-conteiner {
+  /* background: #395135; */
+  border: 1px solid white;
+  display: flex;
+}
+
+.main-conteiner > * {
+  margin: 5px;
+}
+
+.game-info > * {
+  display: inline;
+  color: white;
+}
+
+#canvas {
+  background: #000;
+  border: 1px solid white;
+  image-rendering: pixelated;
+}
